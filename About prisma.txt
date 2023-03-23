@@ -1,0 +1,32 @@
+Prisma adalah ORM (Object-Relational Mapping) untuk mengelola database pada aplikasi yang dibangun menggunakan Node.js atau TypeScript. 
+Berikut ini beberapa contoh command yang sering digunakan pada Prisma:
+
+npx prisma init:
+npx Command ini digunakan untuk membuat proyek baru Prisma. Command ini akan menghasilkan sebuah file bernama schema.prisma dan folder prisma.
+
+npx prisma generate: 
+Command ini digunakan untuk menghasilkan file-file JavaScript/TypeScript yang sesuai dengan skema database. File-file tersebut digunakan oleh aplikasi untuk mengakses database melalui Prisma Client.
+
+npx prisma migrate: 
+Command ini digunakan untuk membuat, menjalankan, atau menghapus migrasi pada skema database. Migrasi adalah proses perubahan skema database, seperti menambahkan kolom baru atau mengubah tipe data kolom.
+
+npx prisma studio: 
+Command ini digunakan untuk membuka Prisma Studio, sebuah GUI untuk mengelola database. Prisma Studio memungkinkan kita untuk melihat data yang tersimpan pada database, menambah, mengubah, atau menghapus data.
+
+npx prisma format: 
+npx Command ini digunakan untuk memformat file schema.prisma agar lebih mudah dibaca dan dipahami.
+
+npx prisma db push: 
+npx Command ini digunakan untuk melakukan sinkronisasi skema database pada database yang sebenarnya. Command ini akan menambahkan tabel atau kolom baru yang terdefinisi pada schema.prisma ke dalam database.
+
+npx prisma db pull: 
+npx Command ini digunakan untuk mengambil skema database dari database yang sebenarnya dan mengubah file schema.prisma agar sesuai dengan skema database tersebut.
+
+npx prisma introspect: 
+npx Command ini digunakan untuk menghasilkan skema database berdasarkan database yang sebenarnya. Command ini dapat digunakan ketika kita tidak memiliki file schema.prisma atau ketika ingin mengubah file schema.prisma berdasarkan skema database yang sudah ada.
+
+npx prisma generate --watch: 
+Command ini digunakan untuk memantau perubahan pada file schema.prisma. Ketika terjadi perubahan pada file tersebut, Prisma Client akan di-generate ulang secara otomatis.
+
+prisma migrate dev: 
+Command ini digunakan untuk memulai mode pengembangan migrasi. Mode ini memungkinkan kita untuk membuat dan menjalankan migrasi secara langsung tanpa harus menambahkan --preview-feature pada command.

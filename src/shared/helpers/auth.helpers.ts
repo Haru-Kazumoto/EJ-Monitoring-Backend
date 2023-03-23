@@ -1,6 +1,6 @@
 import { randomBytes, scrypt } from 'crypto';
 
-const hash = (password) => {
+const hash = (password: any) => {
   return new Promise((resolve, reject) => {
     const salt = randomBytes(8).toString('hex');
 
@@ -11,7 +11,7 @@ const hash = (password) => {
   });
 };
 
-const verify = (password, hash) => {
+const verify = (password: any, hash: any) => {
   return new Promise((resolve, reject) => {
     const [salt, key] = hash.split(':');
     scrypt(password, salt, 64, (err, derivedKey) => {

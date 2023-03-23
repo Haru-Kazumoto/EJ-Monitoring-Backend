@@ -1,5 +1,6 @@
 <p>
-  <a href="https://7code.ro/" target="blank"><img src="https://avatars.githubusercontent.com/u/41831998" height="100" alt="7Code Logo" /></a>
+  <a href="" target="blank"><img src="./static/Nest-Logo.png" height="100" alt="Nest" /></a>
+  <a href="" target="blank"><img src="./static/Prisma-Logo.png" height="100" alt="Prisma" /></a>
 </p>
 
 ## Description
@@ -16,15 +17,7 @@
 * Advanced ESLint/TSLint config. (e.g: auto-fix will remove unused imports)
 * Shared services/constants/helpers
 * Middlewares/Interceptors implementation example.
-
-## TO-DO
-* Add Mail Service 
-* Add [Recap.DEV](https://recap.dev/) integration - Tracing/Monitoring service
-* Add Unit tests.
-* Add Social Media Auth
-* Add documentation for setting the GitHub Secrets for the CI/CD pipeline
-* Add API Throttling - https://docs.nestjs.com/security/rate-limiting
-* ...
+* You can read about Prisma command in About Prisma.txt
 
 ## Installation
 

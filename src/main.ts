@@ -4,7 +4,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-
 import { AppModule } from './modules/app/app.module';
 import { API_PREFIX } from './shared/constants/global.constants';
 import { SwaggerConfig } from './configs/config.interface';
@@ -57,7 +56,7 @@ async function bootstrap() {
   const PORT = process.env.PORT || GLOBAL_CONFIG.nest.port;
   await app.listen(PORT, async () => {
     const myLogger = await app.resolve(MyLogger);
-    myLogger.log(`Server started listening: ${PORT}`);
+    myLogger.log(`Server started listening: http://localhost:${PORT}`);
   });
 }
 bootstrap();

@@ -101,7 +101,7 @@ export class MyLogger implements LoggerService {
 
   // this method just for printing a cool log in your terminal , using chalk
   private logToConsole(level: string, message: string): void {
-    let result;
+    let result: any;
     const color = chalk.default;
     const currentDate = new Date();
     const time = `${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`;
@@ -109,23 +109,16 @@ export class MyLogger implements LoggerService {
     switch (level) {
       default:
       case 'info':
-        result = `[${color.blue('INFO')}] ${color.dim.yellow.bold.underline(
-          time,
-        )} [${color.green(this.context)}] ${message}`;
+        result = `${color.blue('[INFO]')} - ${time} - ${color.dim.yellow(`[${this.context}]`)} ${color.green(message)}`;
         break;
       case 'error':
-        result = `[${color.red('ERR')}] ${color.dim.yellow.bold.underline(
-          time,
-        )} [${color.green(this.context)}] ${message}`;
+        result = `${color.red('[ERROR]')} - ${time} - ${color.dim.yellow(`[${this.context}]`)} ${color.red(message)}`;
         break;
       case 'warn':
-        result = `[${color.yellow('WARN')}] ${color.dim.yellow.bold.underline(
-          time,
-        )} [${color.green(this.context)}] ${message}`;
+        result = `${color.yellow('[WARNING]')} - ${time} - ${color.dim.yellow(`[${this.context}]`)} ${color.yellow(message)}`;
         break;
     }
-    console.log(result); // TODO: DON'T remove this console.log
-
+    console.log(result); // Don't remove this console.log!
     this.logger.close();
   }
 }

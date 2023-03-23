@@ -1,7 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
-
 import { UserService } from '../user/user.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthHelpers } from '../../shared/helpers/auth.helpers';
@@ -37,10 +36,9 @@ export class AuthService {
 
     const payload = {
       id: userData.id,
-      name: userData.name,
+      username: userData.username,
       email: userData.email,
-      password: null,
-      // role: userData.role,
+      password: userData.password
     };
 
     const accessToken = this.jwtService.sign(payload, {

@@ -16,7 +16,7 @@ export class RegisterUserDTO {
 
   @IsString()
   @ApiProperty()
-  name: string;
+  username: string;
 
   @IsString()
   @ApiProperty()
