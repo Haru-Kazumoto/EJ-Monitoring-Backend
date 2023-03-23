@@ -1,6 +1,6 @@
 <p>
-  <a href="" target="blank"><img src="./static/Nest-Logo.png" height="500" alt="Nest" /></a>
-  <a href="" target="blank"><img src="./static/Prisma-Logo.png" height="500" alt="Prisma" /></a>
+  <a href="" target="blank"><img src="./static/Nest-Logo.png" height="300" alt="Nest" /></a>
+  <a href="" target="blank"><img src="./static/Prisma-Logo.png" height="300" alt="Prisma" /></a>
 </p>
 
 ## Description
