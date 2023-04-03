@@ -1,17 +1,16 @@
 import { Prisma, User } from '@prisma/client';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
+import { response } from 'express';
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async findUser(
-    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
-  ): Promise<User | null> {
-    return this.prisma.user.findUnique({
-      where: userWhereUniqueInput,
+  async findUser(userWhereUniqueInput: Prisma.UserWhereUniqueInput): Promise<User | null> {
+     return await this.prisma.user.findUnique({
+      where: userWhereUniqueInput
     });
   }
 
@@ -33,9 +32,13 @@ export class UserService {
   }
 
   async createUser(data: Prisma.UserCreateInput): Promise<User> {
-    return this.prisma.user.create({
-      data,
-    });
+    let errors:any=[]
+    const isEmailExist = this.prisma.user.findUnique({where: {email: data.email}})
+    return isEmailExist 
+    ? errors.push({
+      statusCode: response.statusCode,
+      message: `Email ${data.email} already exists. Please try another email.`}) 
+    : this.prisma.user.create({data});
   }
 
   async updateUser(params: {

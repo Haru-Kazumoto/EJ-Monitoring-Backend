@@ -1,26 +1,32 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { ApiTags } from '@nestjs/swagger';
-
 import { JwtAuthGuard } from '../auth/auth.jwt.guard';
-
 import { UserService } from './user.service';
 
-@ApiTags('users')
-@Controller('/users')
+@Controller('users')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
-  @Get()
+  /**
+   * This api for get all user records from the database
+   * 
+   * @returns User[]
+   */
+  @Get('get-all')
   @UseGuards(JwtAuthGuard)
   async getAll(): Promise<User[]> {
     return this.userService.users({});
   }
 
-  @Post('user')
+  /**
+   * This api for creating user data (Sign up).
+   * @param userData 
+   * @returns 
+   */
+  @Post('sign-up')
   async signupUser(
     @Body() userData: { username: string; email: string; password: string },
   ): Promise<User> {
-    return this.userService.createUser(userData);
+    return await this.userService.createUser(userData);
   }
 }

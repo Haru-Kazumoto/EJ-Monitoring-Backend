@@ -1,0 +1,11 @@
+ModelNameWhereInput : Digunakan untuk membuat kondisi pada saat melakukan query data di tabel. Contoh penggunaannya: AuthorWhereInput.
+
+ModelNameOrderByInput : Digunakan untuk mengurutkan hasil query berdasarkan field tertentu. Contoh penggunaannya: AuthorOrderByInput.
+
+ModelNameCreateManyInput : Digunakan untuk membuat banyak data sekaligus pada tabel tertentu. Contoh penggunaannya: AuthorCreateManyInput.
+
+ModelNameUpdateManyMutationInput : Digunakan untuk memperbarui banyak data sekaligus pada tabel tertentu. Contoh penggunaannya: AuthorUpdateManyMutationInput.
+
+ModelNameWhereUniqueInput : Digunakan untuk menentukan kondisi unik pada saat melakukan query data di tabel. Contoh penggunaannya: AuthorWhereUniqueInput.
+
+Ketika Anda membuat model dengan Prisma, jenis-jenis input ini secara otomatis akan dibuatkan oleh Prisma berdasarkan field yang ada di dalam model tersebut. Jenis-jenis input ini berguna untuk mengatur input dan validasi pada saat melakukan query atau memanipulasi data di tabel, sehingga mempermudah pengembangan aplikasi dan memastikan data yang

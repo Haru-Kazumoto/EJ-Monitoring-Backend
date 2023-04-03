@@ -5,8 +5,7 @@ import { UserService } from '../user/user.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthHelpers } from '../../shared/helpers/auth.helpers';
 import { GLOBAL_CONFIG } from '../../configs/global.config';
-
-import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO } from './auth.dto';
+import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +15,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  //Login user (Sign in)
   public async login(loginUserDTO: LoginUserDTO): Promise<AuthResponseDTO> {
     const userData = await this.userService.findUser({
       email: loginUserDTO.email,
@@ -45,11 +45,10 @@ export class AuthService {
       expiresIn: GLOBAL_CONFIG.security.expiresIn,
     });
 
-    return {
-      user: payload,
-      accessToken: accessToken,
-    };
+    return {accessToken: accessToken};
   }
+
+  //Register user (signup)
   public async register(user: RegisterUserDTO): Promise<User> {
     return this.userService.createUser(user);
   }
