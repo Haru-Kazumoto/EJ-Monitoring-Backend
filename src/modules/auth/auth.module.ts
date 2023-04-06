@@ -12,9 +12,7 @@ import { AuthService } from './auth.service';
 
 @Module({
   imports: [
-    JwtModule.register({
-      secret: JWT_SECRET,
-    }),
+    JwtModule.register({secret: JWT_SECRET,}),
     PrismaModule,
   ],
   providers: [UserService, AuthService, JwtStrategy, PrismaService],

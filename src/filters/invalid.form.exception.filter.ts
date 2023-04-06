@@ -1,6 +1,5 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { Response } from 'express';
-
 import { InvalidFormException } from '../exceptions/invalid.form.exception';
 
 @Catch(InvalidFormException)

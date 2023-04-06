@@ -3,6 +3,7 @@ import { User } from '@prisma/client';
 import { JWT_EXPIRY_SECONDS } from '../../shared/constants/global.constants';
 import { AuthService } from './auth.service';
 import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO } from './dto/auth.dto';
+import { response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -33,7 +34,7 @@ export class AuthController {
   @Post('logout')
   logout(@Response() res):any {
     res.clearCookie('accessToken');
-    res.status(200).send({ 
+    response.status(200).send({ 
       success: true ,
       message: "User has been logged out."
     });

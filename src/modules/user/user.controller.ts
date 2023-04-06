@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/auth.jwt.guard';
 import { UserService } from './user.service';
@@ -28,5 +28,16 @@ export class UserController {
     @Body() userData: { username: string; email: string; password: string },
   ): Promise<User> {
     return await this.userService.createUser(userData);
+  }
+
+  /**
+   * Delete 1 record user by id
+   * 
+   * @param id 
+   * @returns User
+   */
+  @Delete(':id')
+  async deleteUser(@Param('id') id: any): Promise<User>{
+    return await this.userService.deleteUser(id);
   }
 }

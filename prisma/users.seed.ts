@@ -14,7 +14,6 @@ async function seed(){
             return db.user.create({
                 data: {
                     username: user.username,
-                    email: user.email,
                     password: user.password
                 }
             })

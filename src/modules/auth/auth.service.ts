@@ -11,14 +11,18 @@ import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO } from './dto/auth.dto';
 export class AuthService {
   constructor(
     private userService: UserService,
-    private prisma: PrismaService,
     private jwtService: JwtService,
   ) {}
 
-  //Login user (Sign in)
+  /**
+   * Login user account
+   * 
+   * @param loginUserDTO 
+   * @returns 
+   */
   public async login(loginUserDTO: LoginUserDTO): Promise<AuthResponseDTO> {
     const userData = await this.userService.findUser({
-      email: loginUserDTO.email,
+      username: loginUserDTO.username,
     });
 
     if (!userData) {
@@ -37,7 +41,6 @@ export class AuthService {
     const payload = {
       id: userData.id,
       username: userData.username,
-      email: userData.email,
       password: userData.password
     };
 
@@ -48,7 +51,12 @@ export class AuthService {
     return {accessToken: accessToken};
   }
 
-  //Register user (signup)
+  /**
+   * Sign up new user
+   * 
+   * @param user 
+   * @returns 
+   */
   public async register(user: RegisterUserDTO): Promise<User> {
     return this.userService.createUser(user);
   }

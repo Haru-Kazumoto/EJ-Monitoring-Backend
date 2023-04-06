@@ -10,6 +10,7 @@ import { InvalidFormExceptionFilter } from './filters/invalid.form.exception.fil
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  //Set prefix api (api/v1/**)
   app.setGlobalPrefix(API_PREFIX);
   app.useGlobalFilters(new InvalidFormExceptionFilter());
   app.use(

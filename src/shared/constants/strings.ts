@@ -1,1 +1,1 @@
-export const INVALID_EMAIL = 'Missing or invalid email!';
+export const INVALID_EMAIL = 'Invalid email!';
