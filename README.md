@@ -9,7 +9,6 @@
 
 ### Production-ready REST API:
 * Error Handling (Exception Filters)
-* Logging System
 * DB Seeds/Migrations
 * Built-in AuthModule, using JWT. Route Guards
 * Model Events Listener (onCreated, …)
