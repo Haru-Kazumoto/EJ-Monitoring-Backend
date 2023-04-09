@@ -1,10 +1,9 @@
-import { IsEmail, IsNotEmpty, IsString, Matches, MaxLength, MinLength } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
-
-import { INVALID_EMAIL } from '../../../shared/constants/strings';
+import { IsNotEmpty, IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import { STATUS_LOGIN } from '../auth.constants';
 
 export class AuthResponseDTO {
   accessToken: string;
+  status: STATUS_LOGIN
 }
 
 export class RegisterUserDTO {
@@ -24,10 +23,10 @@ export class RegisterUserDTO {
 
 export class LoginUserDTO {
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({message: "Username is empty!"})
   username: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({message: "Password is empty!"})
   password: string;
 }

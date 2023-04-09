@@ -15,9 +15,9 @@ export class UserService {
    * Find all records user
    * 
    * @param {userWhereUniqueInput} 
-   * @returns {Promise<user[]>}
+   * @returns {Promise<User[]>}
    */
-  async findUser(userWhereUniqueInput: Prisma.UserWhereUniqueInput): Promise<User | null> {
+  async findUser(userWhereUniqueInput: Prisma.UserWhereUniqueInput): Promise<User> {
      return await this.prisma.user.findUnique({
       where: userWhereUniqueInput
     });
@@ -48,29 +48,25 @@ export class UserService {
    */
   async createUser(data: Prisma.UserCreateInput): Promise<User> {
     try{
-      await this.prisma.user.findUnique(
+      const isUsernameExists = await this.prisma.user.findUnique(
         {where: {username: data.username}}
       );
-      return await this.prisma.user.create({data});
-    } catch(error) {
-      if(error instanceof Prisma.PrismaClientKnownRequestError){
-        if(error.code === PRISMA_ERRORS.P2002){
-          const errorMessage: Message = {
-            statusCode: response.statusCode,
-            message: `Username ${data.username} already exists`,
-            prismaError: PRISMA_ERRORS.P2002.replace('{constraint}','username')
-          }
-          throw new BadRequestException(errorMessage);
-        }
-      } else if(error instanceof Prisma.PrismaClientUnknownRequestError){
-        const errorMessage: InternalServerErrorMessage = {
-          statusCodeServer: response.statusCode,
-          databaseError: PS_EXCEPTIONS['XX000']
-        }
-        throw new InternalServerErrorException(errorMessage);
-      } else {
-        throw new InternalServerErrorException(error.message);
+      //Check request if username is already exists, it will throwing error.
+      if(isUsernameExists !== null){
+        throw new BadRequestException([`Username [${data.username}] already exists`])
       }
+      const userRecord = await this.prisma.user.create({data});
+      return userRecord;
+    } catch(error) {
+      if(error instanceof Prisma.PrismaClientUnknownRequestError){
+        throw new InternalServerErrorException(
+          {
+            statusCode: response.statusCode,
+            message: PS_EXCEPTIONS['XX000']
+          }
+        )
+      }
+      throw error; //It will throwing global exception.
     }
   }
 

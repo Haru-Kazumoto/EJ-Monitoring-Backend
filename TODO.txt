@@ -1,0 +1,5 @@
+Todo : 
+-user
+    *Create validation for user field [OK]
+    *export the password from method findAll and from schema [PENDING]
+    *when method logout hits, the jwt will be expired and the user must login again [PENDING]

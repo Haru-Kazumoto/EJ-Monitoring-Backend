@@ -2,10 +2,11 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import { UserService } from '../user/user.service';
-import { PrismaService } from '../prisma/prisma.service';
 import { AuthHelpers } from '../../shared/helpers/auth.helpers';
 import { GLOBAL_CONFIG } from '../../configs/global.config';
 import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO } from './dto/auth.dto';
+import { response } from 'express';
+import { STATUS_LOGIN } from './auth.constants';
 
 @Injectable()
 export class AuthService {
@@ -17,8 +18,8 @@ export class AuthService {
   /**
    * Login user account
    * 
-   * @param loginUserDTO 
-   * @returns 
+   * @param {loginUserDTO}
+   * @returns {AuthResponseDTO}
    */
   public async login(loginUserDTO: LoginUserDTO): Promise<AuthResponseDTO> {
     const userData = await this.userService.findUser({
@@ -26,7 +27,10 @@ export class AuthService {
     });
 
     if (!userData) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException({
+        message: `User with username ${loginUserDTO.username} not found, please register first.`,
+        status: STATUS_LOGIN.FAILED
+      });
     }
 
     const isMatch = await AuthHelpers.verify(
@@ -35,7 +39,10 @@ export class AuthService {
     );
 
     if (!isMatch) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException({
+        message: "Login failed!",
+        status: STATUS_LOGIN.FAILED
+      });
     }
 
     const payload = {
@@ -48,7 +55,10 @@ export class AuthService {
       expiresIn: GLOBAL_CONFIG.security.expiresIn,
     });
 
-    return {accessToken: accessToken};
+    return {
+      status: STATUS_LOGIN.SUCCESS,
+      accessToken: accessToken
+    };
   }
 
   /**
