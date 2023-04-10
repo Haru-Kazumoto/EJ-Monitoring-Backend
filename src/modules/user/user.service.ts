@@ -2,17 +2,16 @@ import { Prisma, User } from '@prisma/client';
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { response } from 'express';
-import { Message } from './user.interface';
-import { InternalServerErrorMessage } from './user.interface';
-import { PRISMA_ERRORS } from 'src/shared/constants/prisma.constants';
 import { PS_EXCEPTIONS } from 'src/shared/constants/postgres.constants';
+import { Http2ServerResponse } from 'http2';
+import { request } from 'https';
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
   /**
-   * Find all records user
+   * Find user is user exists?
    * 
    * @param {userWhereUniqueInput} 
    * @returns {Promise<User[]>}
@@ -23,21 +22,48 @@ export class UserService {
     });
   }
 
-  async users(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.UserWhereUniqueInput;
-    where?: Prisma.UserWhereInput;
-    orderBy?: Prisma.UserOrderByWithRelationInput;
-  }): Promise<User[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.user.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
+  // async users(params: {
+  //   skip?: number;
+  //   take?: number;
+  //   cursor?: Prisma.UserWhereUniqueInput;
+  //   where?: Prisma.UserWhereInput;
+  //   orderBy?: Prisma.UserOrderByWithRelationInput;
+  // }): Promise<User[]> {
+  //   const { skip, take, cursor, where, orderBy } = params;
+  //   return this.prisma.user.findMany({
+  //     skip,
+  //     take,
+  //     cursor,
+  //     where,
+  //     orderBy,
+  //   });
+  // }
+
+  /**
+   * Find all records user
+   */
+  async getAll(): Promise<User[]>{
+    const data = await this.prisma.user.findMany();
+    //Filtering data output and excluding password field
+    data.filter((user) => {
+      delete(user.password)
+    })
+    return data;
+  }
+
+  async getById(id: string): Promise<User>{
+    const dataId = await this.prisma.user.findUnique({
+      where: {
+        id: id
+      }
+    })
+    if(!dataId){
+      throw new NotFoundException({
+        message: `Id [${id}] not found.` 
+      }) 
+    }
+    delete(dataId.password);
+    return dataId;
   }
 
   /**
@@ -56,6 +82,7 @@ export class UserService {
         throw new BadRequestException([`Username [${data.username}] already exists`])
       }
       const userRecord = await this.prisma.user.create({data});
+      delete(userRecord.password); //Exlucing password field from output
       return userRecord;
     } catch(error) {
       if(error instanceof Prisma.PrismaClientUnknownRequestError){
