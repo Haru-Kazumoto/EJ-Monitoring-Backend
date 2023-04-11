@@ -1,7 +1,5 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma, PrismaClient } from '@prisma/client';
-import { Author } from '@prisma/client';
-import { request, response } from 'express';
+import { Injectable } from '@nestjs/common';
+import { Author, PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class AuthorService {
@@ -9,5 +7,15 @@ export class AuthorService {
 
     //TODO: Create complex crud
 
+    async getAll(): Promise<Author[]>{
+        const data = await this.prisma.author.findMany({
+            include: {
+                books: true,
+                mediaSocial: true
+            }
+        })
+
+        return data;
+    }
 
 }
