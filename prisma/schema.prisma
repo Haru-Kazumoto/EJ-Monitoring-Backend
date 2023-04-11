@@ -27,7 +27,7 @@ model Author {
 model Book {
   id       Int     @id @default(autoincrement())
   title    String
-  genre    Genre
+  genre    String
   Author   Author? @relation(fields: [authorId], references: [id])
   authorId Int?
 }
@@ -38,15 +38,4 @@ model MediaSocial {
   twitter   String
   Author    Author? @relation(fields: [authorId], references: [id])
   authorId  Int?
-}
-
-enum Genre {
-  FICTION
-  HORROR
-  SUPRANATURAL
-  SCIFI
-  COMEDY
-  ROMANCE
-  ACTION
-  SCHOOL
 }

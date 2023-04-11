@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, Matches, MaxLength, MinLength } from 'class-validator';
-import { STATUS_LOGIN } from '../auth.constants';
+import { STATUS_LOGIN } from 'src/modules/enums/status-enum/status.login.enum';
 
 export class AuthResponseDTO {
   accessToken: string;

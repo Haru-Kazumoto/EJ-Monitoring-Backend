@@ -25,6 +25,6 @@ async function bootstrap() {
 
   const PORT = process.env.PORT || GLOBAL_CONFIG.nest.port;
   await app.listen(PORT); 
-  Logger.log(`Nest running on port http://localhost${PORT}`, "Nest Server");
+  Logger.log(`Nest running on port http://localhost:${PORT}`, "Nest Server");
 }
 bootstrap();

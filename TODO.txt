@@ -1,5 +1,5 @@
-Todo : 
--user
+---Todo---
+-user: 
     *Create validation for user field [OK]
     *Exclude the password from method findAll and from schema [OK]
-    *When method logout hits, the jwt will be expired and the user must login again [PENDING]
+-Create CRUD Author, Book, MediaSocial. [PENDING]

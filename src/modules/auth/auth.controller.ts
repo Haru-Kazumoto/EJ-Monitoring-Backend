@@ -17,7 +17,7 @@ export class AuthController {
     const loginData = await this.authService.login(user);
 
     res.cookie('accessToken', loginData.accessToken, {
-      expires: new Date(new Date().getTime() + JWT_EXPIRY_SECONDS * 5000),
+      expires: new Date(new Date().getTime() + JWT_EXPIRY_SECONDS * 1000),
       sameSite: 'strict',
       secure: true,
       httpOnly: true,

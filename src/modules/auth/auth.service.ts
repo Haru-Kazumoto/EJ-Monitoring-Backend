@@ -5,8 +5,7 @@ import { UserService } from '../user/user.service';
 import { AuthHelpers } from '../../shared/helpers/auth.helpers';
 import { GLOBAL_CONFIG } from '../../configs/global.config';
 import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO } from './dto/auth.dto';
-import { response } from 'express';
-import { STATUS_LOGIN } from './auth.constants';
+import { STATUS_LOGIN } from '../enums/status-enum/status.login.enum';
 
 @Injectable()
 export class AuthService {
