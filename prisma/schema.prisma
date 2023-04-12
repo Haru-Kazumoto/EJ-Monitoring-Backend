@@ -13,29 +13,20 @@ model User {
   password String
 }
 
-model Author {
-  id            Int           @id @default(autoincrement())
+model Student {
+  id            String    @id @default(uuid())
   name          String
-  email         String        @unique
-  joinDate      DateTime      @default(now())
-  mediaSocial   MediaSocial[]
-  books         Book[]
-  mediaSocialId Int
-  bookId        Int
+  age           Int
+  studentNumber Int       @unique()
+  bachelor      String
+  address       Address?
 }
 
-model Book {
-  id       Int     @id @default(autoincrement())
-  title    String
-  genre    String
-  Author   Author? @relation(fields: [authorId], references: [id])
-  authorId Int?
-}
-
-model MediaSocial {
-  id        Int     @id @default(autoincrement())
-  instagram String
-  twitter   String
-  Author    Author? @relation(fields: [authorId], references: [id])
-  authorId  Int?
+model Address {
+  id        String  @id @default(uuid())
+  street    String
+  city      String
+  district  String
+  student   Student @relation(fields: [studentId], references: [id])
+  studentId String @unique
 }

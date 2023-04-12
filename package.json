@@ -4,9 +4,6 @@
   "version": "1.0.0",
   "description": "Nest TypeScript starter repository",
   "license": "MIT",
-  "prisma": {
-    "seed": "ts-node ./prisma/users.seed.ts"
-  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",

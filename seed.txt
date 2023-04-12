@@ -1,3 +1,7 @@
+  // "prisma": {
+  //   "seed": "ts-node ./prisma/users.seed.ts"
+  // },
+
 import { Genre, PrismaClient } from "@prisma/client"
 
 const db = new PrismaClient();

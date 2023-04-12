@@ -3,8 +3,6 @@ import { BadRequestException, Injectable, InternalServerErrorException, NotFound
 import { PrismaService } from '../prisma/prisma.service';
 import { response } from 'express';
 import { PS_EXCEPTIONS } from 'src/shared/constants/postgres.constants';
-import { Http2ServerResponse } from 'http2';
-import { request } from 'https';
 
 @Injectable()
 export class UserService {
@@ -21,23 +19,6 @@ export class UserService {
       where: userWhereUniqueInput
     });
   }
-
-  // async users(params: {
-  //   skip?: number;
-  //   take?: number;
-  //   cursor?: Prisma.UserWhereUniqueInput;
-  //   where?: Prisma.UserWhereInput;
-  //   orderBy?: Prisma.UserOrderByWithRelationInput;
-  // }): Promise<User[]> {
-  //   const { skip, take, cursor, where, orderBy } = params;
-  //   return this.prisma.user.findMany({
-  //     skip,
-  //     take,
-  //     cursor,
-  //     where,
-  //     orderBy,
-  //   });
-  // }
 
   /**
    * Find all records user
