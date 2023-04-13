@@ -1,0 +1,9 @@
+-- AlterTable
+ALTER TABLE "Address" ADD COLUMN     "city" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "district" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "zipCode" TEXT NOT NULL DEFAULT '',
+ALTER COLUMN "street" SET DEFAULT '';
+
+-- AlterTable
+ALTER TABLE "Student" ADD COLUMN     "bachelor" TEXT NOT NULL DEFAULT '',
+ALTER COLUMN "name" SET DEFAULT '';

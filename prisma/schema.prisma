@@ -14,19 +14,18 @@ model User {
 }
 
 model Student {
-  id            String    @id @default(uuid())
-  name          String
-  age           Int
-  studentNumber Int       @unique()
-  bachelor      String
-  address       Address?
+  id      String   @id @default(uuid())
+  name    String   @default("")
+  age     Int
+  address Address?
 }
 
 model Address {
   id        String  @id @default(uuid())
-  street    String
-  city      String
-  district  String
-  student   Student @relation(fields: [studentId], references: [id])
-  studentId String @unique
+  street    String  @default("")
+  district  String  @default("")
+  city      String  @default("")
+  zipCode   String  @default("")
+  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId String  @unique
 }

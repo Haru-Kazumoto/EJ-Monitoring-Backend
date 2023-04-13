@@ -5,7 +5,7 @@ import { UserService } from '../user/user.service';
 import { AuthHelpers } from '../../shared/helpers/auth.helpers';
 import { GLOBAL_CONFIG } from '../../configs/global.config';
 import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO } from './dto/auth.dto';
-import { STATUS_LOGIN } from '../enums/status-enum/status.login.enum';
+import { STATUS_LOGIN } from '../enums/status.login.enum';
 
 @Injectable()
 export class AuthService {
@@ -16,7 +16,7 @@ export class AuthService {
 
   /**
    * Login user account
-   * 
+   *
    * @param {loginUserDTO}
    * @returns {AuthResponseDTO}
    */
@@ -28,7 +28,7 @@ export class AuthService {
     if (!userData) {
       throw new UnauthorizedException({
         message: `User with username ${loginUserDTO.username} not found, please register first.`,
-        status: STATUS_LOGIN.FAILED
+        status: STATUS_LOGIN.FAILED,
       });
     }
 
@@ -39,15 +39,15 @@ export class AuthService {
 
     if (!isMatch) {
       throw new UnauthorizedException({
-        message: "Login failed!",
-        status: STATUS_LOGIN.FAILED
+        message: 'Login failed!',
+        status: STATUS_LOGIN.FAILED,
       });
     }
 
     const payload = {
       id: userData.id,
       username: userData.username,
-      password: userData.password
+      password: userData.password,
     };
 
     const accessToken = this.jwtService.sign(payload, {
@@ -56,15 +56,15 @@ export class AuthService {
 
     return {
       status: STATUS_LOGIN.SUCCESS,
-      accessToken: accessToken
+      accessToken: accessToken,
     };
   }
 
   /**
    * Sign up new user
-   * 
-   * @param user 
-   * @returns 
+   *
+   * @param user
+   * @returns
    */
   public async register(user: RegisterUserDTO): Promise<User> {
     return this.userService.createUser(user);
