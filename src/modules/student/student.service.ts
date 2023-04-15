@@ -1,7 +1,6 @@
 import { BadRequestException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma, PrismaClient, Student } from '@prisma/client';
 import { Message } from '../interface/message.interface';
-import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class StudentService {
