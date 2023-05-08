@@ -7,25 +7,68 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+////////////////////////////////////////////////////
+// for model maintenance, 
+// if there are too many, 
+// please use the vscode shortcut 'ctrl + f' 
+// and look for the model you want to maintain.
+// Keyword : 'Model_name' schema
+////////////////////////////////////////////////////
+
+// User schema
 model User {
-  id       String @id @default(uuid())
-  username String @unique
-  password String
+  id_user      Int       @id @default(autoincrement())
+  name         String
+  username     String    @unique
+  password     String
+  statusUser   Status
+  created_date DateTime  @default(now())
+  update_date  DateTime?
+  delete_date  DateTime?
+  roleId       Int //Ini adalah inputan untuk mengambil id dari role.
+  role         Role?     @relation(fields: [role_id], references: [id_role])
+  role_id      Int
 }
 
-model Student {
-  id      String   @id @default(uuid())
-  name    String   @default("")
-  age     Int
-  address Address?
+enum Status {
+  AKTIF
+  TIDAK_AKTIF
 }
 
-model Address {
-  id        String  @id @default(uuid())
-  street    String  @default("")
-  district  String  @default("")
-  city      String  @default("")
-  zipCode   String  @default("")
-  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  studentId String  @unique
+// Role schema
+model Role {
+  id_role     Int          @id @default(autoincrement())
+  name        String       @unique
+  description String
+  created_at  DateTime     @default(now())
+  updated_at  DateTime?
+  deleted_at  DateTime?
+  User        User[]
+  menu_roles  MenuRoles[]
+}
+
+// Menus schema
+model Menus {
+  id_menu    Int          @id @default(autoincrement())
+  menu_name  String
+  path_route String
+  parent_id  Int
+  menu_roles MenuRoles[]
+}
+
+// Logic: 
+// menus adalah model untuk membuat path dari menu menu yang di tuju dari parent hingga sub parent (child),
+// parent id merujuk pada id dari menu yang men-sub nya.
+// dan menu_roles adalah untuk me map otorisasi atau hak akses nya dari role role yang di pilih
+// jadi pada menu 1 (contoh) akan dimiliki hak aksesnya oleh role 1
+
+// MenuRoles schema
+model MenuRoles {
+  id_menu_roles Int    @id @default(autoincrement())
+  menu_id       Int?
+  role_id       Int?
+  role          Role?  @relation(fields: [id_role], references: [id_role])
+  menu          Menus? @relation(fields: [id_menu], references: [id_menu])
+  id_role       Int?
+  id_menu       Int?
 }

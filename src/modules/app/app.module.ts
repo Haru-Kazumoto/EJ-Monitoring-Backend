@@ -5,15 +5,24 @@ import { AuthModule } from '../auth/auth.module';
 import { PrismaModule } from '../prisma/prisma.module';
 import { GLOBAL_CONFIG } from '../../configs/global.config';
 import { LoggingMiddleware } from '../middleware/logging.middleware';
-import { StudentModule } from '../student/student.module';
+import { RolesModule } from '../roles/roles.module';
+import { MenusModule } from '../menus/menus.module';
 
 @Module({
   imports: [
     PrismaModule,
     AuthModule,
     UserModule,
-    StudentModule,
-    ConfigModule.forRoot({ isGlobal: true, load: [() => GLOBAL_CONFIG] }),
+    RolesModule,
+    MenusModule,
+    ConfigModule.forRoot(
+      { 
+        isGlobal: true, 
+        load: [
+          () => GLOBAL_CONFIG
+        ] 
+      }
+    ),
   ],
   controllers: [],
   providers: [],

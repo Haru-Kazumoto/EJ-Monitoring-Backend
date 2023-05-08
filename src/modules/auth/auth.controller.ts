@@ -26,10 +26,10 @@ export class AuthController {
     return res.status(200).send(loginData);
   }
 
-  @Post('register')
-  async register(@Body() user: RegisterUserDTO): Promise<User> {
-    return this.authService.register(user);
-  }
+  // @Post('register')
+  // async register(@Body() user: RegisterUserDTO): Promise<User> {
+  //   return this.authService.register(user);
+  // }
 
   @Post('logout')
   logout(@Response() res):any {

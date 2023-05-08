@@ -1,110 +1,174 @@
+import { BadRequestException, Injectable, NotFoundException, UseGuards } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { response } from 'express';
-import { PS_EXCEPTIONS } from 'src/shared/constants/postgres.constants';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+    constructor(
+        private prisma: PrismaService
+    ){}
 
-  /**
-   * Find user is user exists?
-   * 
-   * @param {userWhereUniqueInput} 
-   * @returns {Promise<User[]>}
-   */
-  async findUser(userWhereUniqueInput: Prisma.UserWhereUniqueInput): Promise<User> {
-     return await this.prisma.user.findUnique({
-      where: userWhereUniqueInput
-    });
-  }
-
-  /**
-   * Find all records user
-   */
-  async getAll(): Promise<User[]>{
-    const data = await this.prisma.user.findMany();
-    //Filtering data output and excluding password field
-    data.filter((user) => {
-      delete(user.password)
-    })
-    return data;
-  }
-
-  async getById(id: string): Promise<User>{
-    const dataId = await this.prisma.user.findUnique({
-      where: {
-        id: id
-      }
-    })
-    if(!dataId){
-      throw new NotFoundException({
-        message: `Id [${id}] not found.` 
-      }) 
+    async removeProperties(obj: any, properties: string[]): Promise<any> {
+        return Object.assign({}, obj, properties.reduce((a, e) => (delete a[e], a), {}));
     }
-    delete(dataId.password);
-    return dataId;
-  }
 
-  /**
-   * Create new 1 record user
-   * 
-   * @param {data} 
-   * @returns {Promise<User>}
-   */
-  async createUser(data: Prisma.UserCreateInput): Promise<User> {
-    try{
-      const isUsernameExists = await this.prisma.user.findUnique(
-        {where: {username: data.username}}
-      );
-      //Check request if username is already exists, it will throwing error.
-      if(isUsernameExists !== null){
-        throw new BadRequestException([`Username [${data.username}] already exists`])
-      }
-      const userRecord = await this.prisma.user.create({data});
-      delete(userRecord.password); //Exlucing password field from output
-      return userRecord;
-    } catch(error) {
-      if(error instanceof Prisma.PrismaClientUnknownRequestError){
-        throw new InternalServerErrorException(
-          {
-            statusCode: response.statusCode,
-            message: PS_EXCEPTIONS['XX000']
-          }
-        )
-      }
-      throw error; //It will throwing global exception.
+    async getAllUserRecords(): Promise<User[]>{
+        const dataUser = await this.prisma.user.findMany({
+            include: {
+                role: true
+            }
+        });
+        dataUser.filter((data) => {
+            delete(data.password);
+            delete(data.created_date);
+            delete(data.delete_date);
+            delete(data.update_date);
+        });
+
+        return dataUser;
+    } 
+
+    async getAllUserRecordWithDeletedAtIsNull(): Promise<User[]> {
+        return await this.prisma.user.findMany({
+            where: {
+                delete_date: null
+            }
+        })
     }
-  }
 
-  /**
-   * Updating 1 record user
-   * 
-   * @param {params} 
-   * @returns {Promise<User>}}
-   */
-  async updateUser(params: {where: Prisma.UserWhereUniqueInput, data: Prisma.UserUpdateInput}): Promise<User> {
-    const { where, data } = params;
-    return this.prisma.user.update({data,where,});
-  }
-
-  /**
-   * Delete 1 record user
-   * 
-   * @param {where} 
-   * @returns {Promise<User>}
-   */
-  async deleteUser(where: Prisma.UserWhereUniqueInput): Promise<User> {
-    let errors = [];
-    const isIdExists = await this.prisma.user.findUnique({where: {id: where.id}});
-    if(isIdExists === null ){
-      errors.push({
-        statusCode: response.statusCode,
-        message: `Id ${where.id} does not exist`
-      })
+    async getAllUserRecordWithDeleteIsNotNull(): Promise<User[]>{
+        return await this.prisma.user.findMany({
+            where:{
+                delete_date:{
+                    not: null
+                }
+            }
+        });
     }
-    if(errors.length > 0) throw new NotFoundException(errors);
-    return await this.prisma.user.delete({where: {id: where.id}});
-  }
+
+    /**
+     * Find user by id and check is the record has deleted or not/
+     * 
+     * @param userId 
+     * @returns {User}
+     */
+    async findUserById(userId: number): Promise<User>{
+
+        const user = await this.prisma.user.findUnique(
+            {
+                where: {
+                    id_user: +userId
+                }
+            }
+        );
+
+        if(!user || user.delete_date){
+            const message = user  
+            ? [`User of id ${userId} is not found`]
+            : [`User of id ${userId} is already deleted`]
+
+            throw new BadRequestException([message]);
+        }
+
+        return user;
+    }
+
+    /**
+     * Create user record and connecting role by id role.
+     * Validate the username is already exists or not in database, 
+     * also check the status enum from prisma, and validate the role
+     * is the role exists, is the role not deleted.
+     * 
+     * @param userCreateInput 
+     */
+    async createUser(data: Prisma.UserCreateInput): Promise<User> {
+        await this.prisma.user.findUnique({
+            where:{
+                username: data.username
+            }
+        }).then(user => {
+            if(user !== null){
+                throw new BadRequestException([`Username ${data.username} has already exists`]);
+            }
+        });
+
+        await this.prisma.role.findUnique({
+            where:{
+                id_role: +data.roleId
+            }
+        }).then(role => {
+            if(role === null){
+                throw new NotFoundException([`Id ${data.roleId} is not exists!`]);
+            }
+        });
+
+        const isRoleHasDeleted = await this.prisma.role.findFirst({
+            where:{
+                deleted_at: null
+            }
+        });
+
+        if(isRoleHasDeleted.deleted_at !== null){
+            throw new BadRequestException([`Role with id ${data.roleId} has deleted.`]);
+        }
+
+        const result = await this.prisma.user.create({
+            data:{
+                ...data,
+                role:{
+                    connect: {
+                        id_role: +data.roleId
+                    }
+                }
+            },
+            include: {
+                role: true
+            }
+        });
+        
+        return result;
+        
+    }
+
+    /**
+     * Updating user and update the role if necessary
+     * 
+     * 
+     * @param userPayload 
+     * @param userId 
+     */
+    async updateUserById(UserUpdateInput: Prisma.UserUpdateInput, userId: number): Promise<User>{
+        await this.prisma.user.findUnique({
+            where:{
+                id_user: userId
+            }
+        }).then(isId => {
+            if(isId === null){
+                throw new NotFoundException(['Id not found!']);
+            }
+        });
+
+        const checkIsRecordHasDeleted = await this.prisma.user.findUnique({
+            where:{
+                id_user: +userId
+            },
+            select:{
+                delete_date: true
+            }
+        });
+
+        if(checkIsRecordHasDeleted && checkIsRecordHasDeleted.delete_date !== null){
+            throw new BadRequestException([`This record of id ${userId} has deleted!`]);
+        };
+
+        return await this.prisma.user.update({
+            where:{
+                id_user: +userId
+            },
+            data:{
+                ...UserUpdateInput,
+                update_date: new Date()
+            }
+        });
+    }
 }

@@ -1,28 +1,29 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@prisma/client';
-import { UserService } from '../user/user.service';
-import { AuthHelpers } from '../../shared/helpers/auth.helpers';
 import { GLOBAL_CONFIG } from '../../configs/global.config';
-import { AuthResponseDTO, LoginUserDTO, RegisterUserDTO } from './dto/auth.dto';
+import { AuthResponseDTO, LoginUserDTO } from './dto/auth.dto';
 import { STATUS_LOGIN } from '../enums/status.login.enum';
+import { PrismaService } from '../prisma/prisma.service';
+import { PasswordHashing } from 'src/shared/helpers/password.hasher';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UserService,
+    private readonly prisma: PrismaService,
     private jwtService: JwtService,
   ) {}
 
   /**
-   * Login user account
+   * Login authentication user with jwt
    *
    * @param {loginUserDTO}
    * @returns {AuthResponseDTO}
    */
   public async login(loginUserDTO: LoginUserDTO): Promise<AuthResponseDTO> {
-    const userData = await this.userService.findUser({
-      username: loginUserDTO.username,
+    const userData = await this.prisma.user.findUnique({
+      where: {
+        username: loginUserDTO.username
+      }
     });
 
     if (!userData) {
@@ -32,7 +33,7 @@ export class AuthService {
       });
     }
 
-    const isMatch = await AuthHelpers.verify(
+    const isMatch = await PasswordHashing.verify(
       loginUserDTO.password,
       userData.password,
     );
@@ -45,7 +46,7 @@ export class AuthService {
     }
 
     const payload = {
-      id: userData.id,
+      id: userData.id_user,
       username: userData.username,
       password: userData.password,
     };
@@ -66,7 +67,7 @@ export class AuthService {
    * @param user
    * @returns
    */
-  public async register(user: RegisterUserDTO): Promise<User> {
-    return this.userService.createUser(user);
-  }
+  // public async register(user: RegisterUserDTO): Promise<User> {
+  //   return this.userService.createUser(user);
+  // }
 }

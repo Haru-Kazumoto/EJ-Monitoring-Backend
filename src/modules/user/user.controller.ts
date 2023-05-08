@@ -1,56 +1,43 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, UseGuards } from '@nestjs/common';
-import { Prisma, User } from '@prisma/client';
-import { JwtAuthGuard } from '../auth/auth.jwt.guard';
+import { Body, Controller, Get, Post, Put, Param } from '@nestjs/common';
 import { UserService } from './user.service';
+import { User } from '@prisma/client';
+import { UserDtoCreate } from './user.dto.create';
+import { UserDtoUpdate } from './user.dto.update';
 
-@Controller('users')
+@Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
 
-  /**
-   * This api for get all user records from the database
-   * 
-   * @returns User[]
-   */
-  @Get('get-all')
-  @UseGuards(JwtAuthGuard)
-  async getAll(): Promise<User[]> {
-    return await this.userService.getAll();
-  }
+    constructor(
+        private readonly userService: UserService
+    ){}
 
-  /**
-   * This api for creating user data (Sign up).
-   * @param userData 
-   * @returns 
-   */
-  @Post('sign-up')
-  async signupUser(
-    @Body() userData: { username: string; password: string },
-  ): Promise<User> {
-    return await this.userService.createUser(userData);
-  }
+    @Get('get-all')
+    public async getAllUserRecord(): Promise<User[]>{
+        return await this.userService.getAllUserRecords();
+    }
 
-  /**
-   * Find user by id
-   * 
-   * @param id {UUID}
-   * @returns User
-   */
-  @Get(':id')
-  @UseGuards(JwtAuthGuard)
-  async getUserById(@Param('id') id: any): Promise<User>{
-    return await this.userService.getById(id);
-  }
+    @Get('get-all-deleted-null')
+    public async getAllUserWithDeletedNull(): Promise<User[]>{
+        return await this.userService.getAllUserRecordWithDeletedAtIsNull();
+    }
 
-  /**
-   * Delete 1 record user by id
-   * 
-   * @param id 
-   * @returns User
-   */
-  @Delete(':id')
-  @UseGuards(JwtAuthGuard)
-  async deleteUser(@Param('id') id: any): Promise<User>{
-    return await this.userService.deleteUser(id);
-  }
+    @Get('get-all-deleted-not-null')
+    public async getAllUserWithDeletedIsNotNull(): Promise<User[]>{
+        return await this.userService.getAllUserRecordWithDeleteIsNotNull();
+    }
+
+    @Post('create')
+    public async createUser(
+        @Body() userDtoCreate: UserDtoCreate
+    ): Promise<User>{
+        return await this.userService.createUser(userDtoCreate);
+    }
+
+    @Put('update-without-role/:id')
+    public async updateUserById(
+        @Param('id') id: number,
+        @Body() userDtoUpdate: UserDtoUpdate
+    ): Promise<User>{
+        return await this.userService.updateUserById(userDtoUpdate, id);
+    }
 }
