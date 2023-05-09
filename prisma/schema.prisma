@@ -72,3 +72,25 @@ model MenuRoles {
   id_role       Int?
   id_menu       Int?
 }
+
+model Mappingcode {
+  id         Int       @id @default(autoincrement())
+  code       String
+  definition String
+  status     StatusCode
+  isActive   isActive
+  priority   Int
+  created_at DateTime  @default(now())
+  updated_at DateTime?
+  deleted_at DateTime?
+}
+
+enum StatusCode {
+  Sukses
+  Gagal
+}
+
+enum isActive {
+  Yes
+  No
+}
