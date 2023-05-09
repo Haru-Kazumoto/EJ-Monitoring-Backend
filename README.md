@@ -18,7 +18,7 @@
 * Middlewares/Interceptors implementation example.
 * You can read about Prisma command in About Prisma.txt
 
-## Installation
+## Installations
 
 ```bash
 $ npm install

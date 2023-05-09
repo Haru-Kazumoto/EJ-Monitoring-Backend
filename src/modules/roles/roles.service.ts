@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException, UseGuards } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma, Role } from '@prisma/client';
-import { JwtAuthGuard } from '../auth/auth.jwt.guard';
 
 @Injectable()
 export class RolesService {

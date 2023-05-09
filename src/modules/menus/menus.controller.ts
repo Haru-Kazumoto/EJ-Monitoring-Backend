@@ -1,4 +1,10 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/auth.jwt.guard';
 
 @Controller('menus')
-export class MenusController {}
+@UseGuards(JwtAuthGuard)
+export class MenusController {
+    constructor(
+        
+    ){}
+}

@@ -37,10 +37,10 @@ enum Status {
 
 // Role schema
 model Role {
-  id_role     Int          @id @default(autoincrement())
-  name        String       @unique
+  id_role     Int         @id @default(autoincrement())
+  name        String      @unique
   description String
-  created_at  DateTime     @default(now())
+  created_at  DateTime    @default(now())
   updated_at  DateTime?
   deleted_at  DateTime?
   User        User[]
@@ -49,7 +49,7 @@ model Role {
 
 // Menus schema
 model Menus {
-  id_menu    Int          @id @default(autoincrement())
+  id_menu    Int         @id @default(autoincrement())
   menu_name  String
   path_route String
   parent_id  Int
@@ -64,11 +64,9 @@ model Menus {
 
 // MenuRoles schema
 model MenuRoles {
-  id_menu_roles Int    @id @default(autoincrement())
+  id_menu_roles Int     @id @default(autoincrement())
   menu_id       Int?
   role_id       Int?
-  role          Role?  @relation(fields: [id_role], references: [id_role])
-  menu          Menus? @relation(fields: [id_menu], references: [id_menu])
-  id_role       Int?
-  id_menu       Int?
+  role          Role[]
+  menu          Menus[]
 }
