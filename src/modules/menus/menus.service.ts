@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { Menus } from '@prisma/client';
 
 @Injectable()
 export default class MenusService {
@@ -11,12 +12,22 @@ export default class MenusService {
     /**
      * Get all menus record ignore deleted_at
      */
-    
+    async getAllMenusRecordIgnoreDeletedAt(): Promise<Menus[]>{
+        return await this.prisma.menus.findMany();
+    }
 
     /**
      * Get all menus record with deleted_at is null (not deleted)
      */
-    // async ...
+    async getAllMenusRecordWithDeletedAtNull(): Promise<Menus[]>{
+        return await this.prisma.menus.findMany(
+            {
+                where: {
+                    
+                }
+            }
+        )
+    }
 
     /**
      * Get all menus recrod with deleted_at is not null (has deleted)

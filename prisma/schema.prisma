@@ -37,22 +37,45 @@ enum Status {
 
 // Role schema
 model Role {
-  id_role     Int          @id @default(autoincrement())
-  name        String       @unique
+  id_role     Int         @id @default(autoincrement())
+  name        String      @unique
   description String
-  created_at  DateTime     @default(now())
+  created_at  DateTime    @default(now())
   updated_at  DateTime?
   deleted_at  DateTime?
   User        User[]
   menu_roles  MenuRoles[]
 }
 
+//------------------Model diatas sudah done--------------------//
+
+//MappingCode schema
+model Mappingcode {
+  id         Int       @id @default(autoincrement())
+  code       String
+  definition String
+  status     StatusCode
+  isActive   Status
+  priority   Int
+  created_at DateTime  @default(now())
+  updated_at DateTime?
+  deleted_at DateTime?
+}
+
+enum StatusCode {
+  Sukses
+  Gagal
+}
+
 // Menus schema
 model Menus {
-  id_menu    Int          @id @default(autoincrement())
+  id_menu    Int         @id @default(autoincrement())
   menu_name  String
   path_route String
   parent_id  Int
+  created_at DateTime    @default(now())
+  updated_at DateTime?
+  deleted_at DateTime?
   menu_roles MenuRoles[]
 }
 
@@ -64,11 +87,14 @@ model Menus {
 
 // MenuRoles schema
 model MenuRoles {
-  id_menu_roles Int    @id @default(autoincrement())
+  id_menu_roles Int       @id @default(autoincrement())
   menu_id       Int?
   role_id       Int?
-  role          Role?  @relation(fields: [id_role], references: [id_role])
-  menu          Menus? @relation(fields: [id_menu], references: [id_menu])
+  created_at    DateTime  @default(now())
+  updated_at    DateTime?
+  deleted_at    DateTime?
+  role          Role?     @relation(fields: [id_role], references: [id_role])
+  menu          Menus?    @relation(fields: [id_menu], references: [id_menu])
   id_role       Int?
   id_menu       Int?
 }
