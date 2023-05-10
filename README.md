@@ -8,7 +8,7 @@
 [Nest](https://github.com/nestjs/nest) + [Prisma](https://github.com/prisma/prisma) + [TypeScript](https://github.com/microsoft/TypeScript) starter repository.
 
 ### Production-ready REST API:
-* Error Handling (Exception Filters)
+* Error Handling (Exception Filterss)
 * DB Seeds/Migrations
 * Built-in AuthModule, using JWT. Route Guards
 * Model Events Listener (onCreated, …)

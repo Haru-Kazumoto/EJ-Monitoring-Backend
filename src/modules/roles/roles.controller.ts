@@ -17,7 +17,7 @@ import { validate } from 'class-validator';
 import { JwtAuthGuard } from '../auth/auth.jwt.guard';
 
 @Controller('roles')
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
 export class RolesController {
 
     constructor(
