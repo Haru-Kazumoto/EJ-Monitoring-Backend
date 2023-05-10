@@ -8,9 +8,9 @@ datasource db {
 }
 
 ////////////////////////////////////////////////////
-// for model maintenance, 
-// if there are too many, 
-// please use the vscode shortcut 'ctrl + f' 
+// for model maintenance,
+// if there are too many,
+// please use the vscode shortcut 'ctrl + f'
 // and look for the model you want to maintain.
 // Keyword : 'Model_name' schema
 ////////////////////////////////////////////////////
@@ -79,7 +79,7 @@ model Menus {
   menu_roles MenuRoles[]
 }
 
-// Logic: 
+// Logic:
 // menus adalah model untuk membuat path dari menu menu yang di tuju dari parent hingga sub parent (child),
 // parent id merujuk pada id dari menu yang men-sub nya.
 // dan menu_roles adalah untuk me map otorisasi atau hak akses nya dari role role yang di pilih
@@ -87,14 +87,9 @@ model Menus {
 
 // MenuRoles schema
 model MenuRoles {
-  id_menu_roles Int       @id @default(autoincrement())
+  id_menu_roles Int     @id @default(autoincrement())
   menu_id       Int?
   role_id       Int?
-  created_at    DateTime  @default(now())
-  updated_at    DateTime?
-  deleted_at    DateTime?
-  role          Role?     @relation(fields: [id_role], references: [id_role])
-  menu          Menus?    @relation(fields: [id_menu], references: [id_menu])
-  id_role       Int?
-  id_menu       Int?
+  role          Role[]
+  menu          Menus[]
 }
