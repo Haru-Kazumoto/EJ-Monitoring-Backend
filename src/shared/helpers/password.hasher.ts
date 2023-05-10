@@ -9,7 +9,7 @@ const hash = async (password: string): Promise<string> => {
 }
 
 const verify = async (password: string, rawHashedPassword: string): Promise<boolean> => {
-    const hashedPassword = await argon2.verify(password,rawHashedPassword, );
+    const hashedPassword = await argon2.verify(rawHashedPassword,password);
 
     return hashedPassword;
 }
