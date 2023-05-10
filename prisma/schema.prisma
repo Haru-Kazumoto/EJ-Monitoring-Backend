@@ -8,9 +8,9 @@ datasource db {
 }
 
 ////////////////////////////////////////////////////
-// for model maintenance, 
-// if there are too many, 
-// please use the vscode shortcut 'ctrl + f' 
+// for model maintenance,
+// if there are too many,
+// please use the vscode shortcut 'ctrl + f'
 // and look for the model you want to maintain.
 // Keyword : 'Model_name' schema
 ////////////////////////////////////////////////////
@@ -47,16 +47,39 @@ model Role {
   menu_roles  MenuRoles[]
 }
 
+//------------------Model diatas sudah done--------------------//
+
+//MappingCode schema
+model Mappingcode {
+  id         Int       @id @default(autoincrement())
+  code       String
+  definition String
+  status     StatusCode
+  isActive   Status
+  priority   Int
+  created_at DateTime  @default(now())
+  updated_at DateTime?
+  deleted_at DateTime?
+}
+
+enum StatusCode {
+  Sukses
+  Gagal
+}
+
 // Menus schema
 model Menus {
   id_menu    Int         @id @default(autoincrement())
   menu_name  String
   path_route String
   parent_id  Int
+  created_at DateTime    @default(now())
+  updated_at DateTime?
+  deleted_at DateTime?
   menu_roles MenuRoles[]
 }
 
-// Logic: 
+// Logic:
 // menus adalah model untuk membuat path dari menu menu yang di tuju dari parent hingga sub parent (child),
 // parent id merujuk pada id dari menu yang men-sub nya.
 // dan menu_roles adalah untuk me map otorisasi atau hak akses nya dari role role yang di pilih

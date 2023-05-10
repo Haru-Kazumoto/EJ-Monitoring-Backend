@@ -7,6 +7,7 @@ import { GLOBAL_CONFIG } from '../../configs/global.config';
 import { LoggingMiddleware } from '../middleware/logging.middleware';
 import { RolesModule } from '../roles/roles.module';
 import { MenusModule } from '../menus/menus.module';
+import { MappingcodeModule } from '../mapping-code/mapping-code.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { MenusModule } from '../menus/menus.module';
     UserModule,
     RolesModule,
     MenusModule,
+    MappingcodeModule,
     ConfigModule.forRoot(
       { 
         isGlobal: true, 

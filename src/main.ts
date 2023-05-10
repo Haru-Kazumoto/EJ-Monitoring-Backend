@@ -23,7 +23,7 @@ async function bootstrap() {
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
 
-  const PORT = process.env.PORT || GLOBAL_CONFIG.nest.port;
+  const PORT =  GLOBAL_CONFIG.nest.port;
   await app.listen(PORT); 
   Logger.log(`Nest running on port http://localhost:${PORT}`, "Nest Server");
 }

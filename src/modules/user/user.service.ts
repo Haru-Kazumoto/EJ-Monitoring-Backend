@@ -92,15 +92,15 @@ export class UserService {
             }
         });
 
-        await this.prisma.role.findUnique({
-            where:{
-                id_role: +data.roleId
-            }
-        }).then(role => {
-            if(role === null){
-                throw new NotFoundException([`Id ${data.roleId} is not exists!`]);
-            }
-        });
+        // await this.prisma.role.findUnique({
+        //     where:{
+        //         id_role: +data.roleId
+        //     }
+        // }).then(role => {
+        //     if(role === null){
+        //         throw new NotFoundException([`Id ${data.roleId} is not exists!`]);
+        //     }
+        // });
 
         const isRoleHasDeleted = await this.prisma.role.findFirst({
             where:{

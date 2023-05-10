@@ -3,8 +3,4 @@ import { JwtAuthGuard } from '../auth/auth.jwt.guard';
 
 @Controller('menus')
 @UseGuards(JwtAuthGuard)
-export class MenusController {
-    constructor(
-        
-    ){}
-}
+export class MenusController {}
